@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,6 +206,67 @@
         .cat-tax .category-icon { background: rgba(236,72,153,0.15); color: var(--accent-pink); }
         .cat-tax .item-value { color: var(--accent-pink); }
 
+        .cat-acronyms .category-icon { background: rgba(99,102,241,0.15); color: #818cf8; }
+
+        .acronym-table-wrap {
+            overflow-x: auto;
+            padding: 4px 0;
+        }
+
+        .acronym-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+        }
+
+        .acronym-table thead th {
+            text-align: left;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            position: sticky;
+            top: 0;
+        }
+
+        .acronym-table tbody tr {
+            transition: background 0.15s;
+        }
+
+        .acronym-table tbody tr:hover {
+            background: var(--card-hover);
+        }
+
+        .acronym-table tbody td {
+            padding: 11px 20px;
+            border-bottom: 1px solid rgba(51,65,85,0.4);
+            vertical-align: top;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        .acronym-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .acr-code {
+            font-weight: 700;
+            color: #818cf8 !important;
+            white-space: nowrap;
+            min-width: 90px;
+            font-size: 0.9rem;
+        }
+
+        .acronym-table tbody td:nth-child(2) {
+            color: var(--text);
+            font-weight: 500;
+            min-width: 200px;
+        }
+
         .hidden { display: none; }
 
         .tooltip {
@@ -246,6 +308,7 @@
     <button class="filter-btn" data-filter="fraud">Fraud & Law</button>
     <button class="filter-btn" data-filter="admin">Administration</button>
     <button class="filter-btn" data-filter="tax">Tax & Retirement</button>
+    <button class="filter-btn" data-filter="acronyms">📖 Acronyms</button>
 </div>
 
 <div class="grid" id="grid">
@@ -541,6 +604,45 @@
                     <div class="item-desc">Minimum period that producers and insurers must maintain transaction records.</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Acronyms -->
+    <div class="category-section cat-acronyms" data-cat="acronyms" style="grid-column: 1 / -1;">
+        <div class="category-header">
+            <div class="category-icon">📖</div>
+            <h2>Key Acronyms & Definitions</h2>
+            <span class="count">17 items</span>
+        </div>
+        <div class="acronym-table-wrap">
+            <table class="acronym-table">
+                <thead>
+                    <tr>
+                        <th>Acronym</th>
+                        <th>Full Name</th>
+                        <th>Significance / Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="acr-code">DIFS</td><td>Department of Insurance and Financial Services</td><td>The principal Michigan executive department responsible for insurance and financial institutions.</td></tr>
+                    <tr><td class="acr-code">NAIC</td><td>National Association of Insurance Commissioners</td><td>An industry association of state regulators that creates Model Acts to encourage regulatory uniformity across states.</td></tr>
+                    <tr><td class="acr-code">NCOIL</td><td>National Conference of Insurance Legislators</td><td>An organization of state legislators that works to preserve state regulation and educate policymakers on insurance issues.</td></tr>
+                    <tr><td class="acr-code">FCRA</td><td>Fair Credit Reporting Act</td><td>A federal law protecting consumer privacy; requires insurers to notify applicants if a credit report or investigation is used for underwriting.</td></tr>
+                    <tr><td class="acr-code">SEC</td><td>Securities and Exchange Commission</td><td>The federal agency that, along with state offices, regulates Variable Annuities because they involve investment risk.</td></tr>
+                    <tr><td class="acr-code">USC</td><td>United States Code</td><td>The official compilation of federal statutes, specifically referenced regarding fraud and false statements in insurance.</td></tr>
+                    <tr><td class="acr-code">MIB</td><td>Medical Information Bureau</td><td>A non-profit trade organization that maintains medical information to help underwriters detect misrepresentations.</td></tr>
+                    <tr><td class="acr-code">APS</td><td>Attending Physician's Statement</td><td>A report requested by an underwriter from an applicant's doctor to gain further insight into a specific medical condition.</td></tr>
+                    <tr><td class="acr-code">OASDHI</td><td>Old-Age, Survivors, Disability, and Health Insurance</td><td>The formal technical name for the Social Security program.</td></tr>
+                    <tr><td class="acr-code">PIA</td><td>Primary Insurance Amount</td><td>The mathematical base used to determine the full amount of an individual's Social Security retirement benefits.</td></tr>
+                    <tr><td class="acr-code">MEC</td><td>Modified Endowment Contract</td><td>A life insurance policy that fails the "7-Pay Test" (too much money put in too quickly), losing its favorable tax status.</td></tr>
+                    <tr><td class="acr-code">SGLI / VGLI</td><td>Servicemembers' / Veterans' Group Life Insurance</td><td>Social insurance programs specifically provided for members of the military and veterans.</td></tr>
+                    <tr><td class="acr-code">IRA</td><td>Individual Retirement Account</td><td>A tax-advantaged account for personal retirement savings; includes Traditional and Roth variations.</td></tr>
+                    <tr><td class="acr-code">SIMPLE</td><td>Savings Incentive Match Plan for Employees</td><td>A retirement plan designed for small businesses with 100 or fewer employees.</td></tr>
+                    <tr><td class="acr-code">HR-10</td><td>Keogh Plan</td><td>A qualified retirement plan specifically designed for self-employed individuals and their employees.</td></tr>
+                    <tr><td class="acr-code">SEP</td><td>Simplified Employee Pension</td><td>An arrangement where an employer makes contributions into an IRA established for each employee.</td></tr>
+                    <tr><td class="acr-code">PPGA</td><td>Personal Producing General Agency</td><td>A system where a general agent focuses on personal sales in a territory rather than recruiting and training new agents.</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
