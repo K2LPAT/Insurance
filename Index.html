@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Regulatory Numbers — Quick Reference</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --card-hover: #273548;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --accent-cyan: #06b6d4;
+            --accent-pink: #ec4899;
+            --accent-orange: #f97316;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--text);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .category-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .category-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .category-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .category-header .count {
+            margin-left: auto;
+            background: rgba(255,255,255,0.08);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .items {
+            padding: 8px 0;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 20px;
+            gap: 14px;
+            transition: background 0.15s;
+            cursor: default;
+        }
+
+        .item:hover {
+            background: var(--card-hover);
+        }
+
+        .item-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            min-width: 80px;
+            flex-shrink: 0;
+            line-height: 1.3;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .item-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Category color themes */
+        .cat-claims .category-icon { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+        .cat-claims .item-value { color: var(--accent-blue); }
+
+        .cat-licensing .category-icon { background: rgba(34,197,94,0.15); color: var(--accent-green); }
+        .cat-licensing .item-value { color: var(--accent-green); }
+
+        .cat-appointments .category-icon { background: rgba(6,182,212,0.15); color: var(--accent-cyan); }
+        .cat-appointments .item-value { color: var(--accent-cyan); }
+
+        .cat-policy .category-icon { background: rgba(168,85,247,0.15); color: var(--accent-purple); }
+        .cat-policy .item-value { color: var(--accent-purple); }
+
+        .cat-discipline .category-icon { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+        .cat-discipline .item-value { color: var(--accent-red); }
+
+        .cat-fraud .category-icon { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+        .cat-fraud .item-value { color: var(--accent-orange); }
+
+        .cat-admin .category-icon { background: rgba(245,158,11,0.15); color: var(--accent-amber); }
+        .cat-admin .item-value { color: var(--accent-amber); }
+
+        .cat-tax .category-icon { background: rgba(236,72,153,0.15); color: var(--accent-pink); }
+        .cat-tax .item-value { color: var(--accent-pink); }
+
+        .hidden { display: none; }
+
+        .tooltip {
+            position: fixed;
+            background: #1a1a2e;
+            border: 1px solid var(--accent-blue);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text);
+            max-width: 280px;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5rem; }
+            body { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📋 Insurance Regulatory Numbers</h1>
+    <p>Key timeframes, fines, and requirements — click a category to filter</p>
+</div>
+
+<div class="filters">
+    <button class="filter-btn active" data-filter="all">All Categories</button>
+    <button class="filter-btn" data-filter="claims">Claims & Payments</button>
+    <button class="filter-btn" data-filter="licensing">Licensing</button>
+    <button class="filter-btn" data-filter="appointments">Appointments</button>
+    <button class="filter-btn" data-filter="policy">Policy Provisions</button>
+    <button class="filter-btn" data-filter="discipline">Discipline & Fines</button>
+    <button class="filter-btn" data-filter="fraud">Fraud & Law</button>
+    <button class="filter-btn" data-filter="admin">Administration</button>
+    <button class="filter-btn" data-filter="tax">Tax & Retirement</button>
+</div>
+
+<div class="grid" id="grid">
+
+    <!-- Claims & Payments -->
+    <div class="category-section cat-claims" data-cat="claims">
+        <div class="category-header">
+            <div class="category-icon">💰</div>
+            <h2>Claims & Payments</h2>
+            <span class="count">4 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">60 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Claim Payment</div>
+                    <div class="item-desc">Time an insurer has to pay a claim after receiving proof of loss.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">12%</div>
+                <div class="item-details">
+                    <div class="item-label">Late Payment Interest</div>
+                    <div class="item-desc">Annual interest rate an insurer must pay on late claim payments.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">6 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Legal Action</div>
+                    <div class="item-desc">Statute of limitations to sue an insurer for unpaid claims.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">5 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Record Keeping</div>
+                    <div class="item-desc">Minimum time a producer must keep records of insurance transactions.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Licensing -->
+    <div class="category-section cat-licensing" data-cat="licensing">
+        <div class="category-header">
+            <div class="category-icon">🎓</div>
+            <h2>Licensing</h2>
+            <span class="count">7 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">18 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Age Requirement</div>
+                    <div class="item-desc">Minimum age required to hold a producer license.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">20 Hours</div>
+                <div class="item-details">
+                    <div class="item-label">Pre-licensing Education</div>
+                    <div class="item-desc">Mandatory study hours required per line of authority (e.g., Life).</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">12 Months</div>
+                <div class="item-details">
+                    <div class="item-label">Education Validity</div>
+                    <div class="item-desc">Timeframe within which prelicensing education must be completed before applying.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">90 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Early Renewal</div>
+                    <div class="item-desc">How early an applicant can apply for a license renewal before it expires.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">1 Year</div>
+                <div class="item-details">
+                    <div class="item-label">Lapsed License Reinstatement</div>
+                    <div class="item-desc">Period during which a lapsed license may be reinstated after the suspension date.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">180 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Temporary License</div>
+                    <div class="item-desc">Maximum duration for a temporary license issued due to death, disability, or military service.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">30 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Change of Info</div>
+                    <div class="item-desc">Deadline to notify the Commissioner of a change in name or address.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments -->
+    <div class="category-section cat-appointments" data-cat="appointments">
+        <div class="category-header">
+            <div class="category-icon">📝</div>
+            <h2>Appointments</h2>
+            <span class="count">5 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">15 Days</div>
+                <div class="item-details">
+                    <div class="item-label">File Appointment Notice</div>
+                    <div class="item-desc">Deadline for an insurer to file a notice of appointment with the Commissioner.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">30 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Eligibility Verification</div>
+                    <div class="item-desc">Time the Commissioner has to verify a producer's eligibility after receiving an appointment notice.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">5 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Ineligibility Notice</div>
+                    <div class="item-desc">Window for the Commissioner to notify an insurer if a producer is found ineligible.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">30 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Termination Notice</div>
+                    <div class="item-desc">Time an insurer has to notify the Commissioner of a producer's termination.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">30 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Criminal Acts Reporting</div>
+                    <div class="item-desc">Deadline to report any administrative action or criminal prosecution.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Policy Provisions -->
+    <div class="category-section cat-policy" data-cat="policy">
+        <div class="category-header">
+            <div class="category-icon">📄</div>
+            <h2>Policy Provisions</h2>
+            <span class="count">6 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">10 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Free Look (Life)</div>
+                    <div class="item-desc">Minimum period to return a life insurance policy for a full refund.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">30 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Free Look (Senior)</div>
+                    <div class="item-desc">Period to return Medicare Supplement or Long-Term Care policies.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">31 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Grace Period</div>
+                    <div class="item-desc">Standard time allowed to pay a late premium before a policy lapses.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">3 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Policy Reinstatement</div>
+                    <div class="item-desc">Most common period allowed for reinstating a lapsed policy.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">45 Days</div>
+                <div class="item-details">
+                    <div class="item-label">Reinstatement Application</div>
+                    <div class="item-desc">Time an insurer has to act on a reinstatement application; if no action, it is automatically reinstated.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">2 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Contestability Period</div>
+                    <div class="item-desc">Period after which an insurer cannot deny a life claim due to misstatements.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Discipline & Fines -->
+    <div class="category-section cat-discipline" data-cat="discipline">
+        <div class="category-header">
+            <div class="category-icon">⚖️</div>
+            <h2>Discipline & Fines</h2>
+            <span class="count">4 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">$500</div>
+                <div class="item-details">
+                    <div class="item-label">Fine per Unfair Act Violation</div>
+                    <div class="item-desc">Fine per violation for an unfair act (up to $5,000 total).</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$2,500</div>
+                <div class="item-details">
+                    <div class="item-label">Knowing Violation Fine</div>
+                    <div class="item-desc">Fine per violation if the person reasonably knew they were in violation (up to $25,000 total).</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$5,000</div>
+                <div class="item-details">
+                    <div class="item-label">Civil Fines (per violation)</div>
+                    <div class="item-desc">Max fine per violation for intentional "Unfair Trade Practices."</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$50,000</div>
+                <div class="item-details">
+                    <div class="item-label">Aggregate Fines</div>
+                    <div class="item-desc">Maximum total fine for a series of violations in a single proceeding.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fraud & Law -->
+    <div class="category-section cat-fraud" data-cat="fraud">
+        <div class="category-header">
+            <div class="category-icon">🔒</div>
+            <h2>Fraud & Law</h2>
+            <span class="count">3 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">2 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Incontestability Period</div>
+                    <div class="item-desc">After this period, an insurer cannot void a policy for misstatements.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$10,000</div>
+                <div class="item-details">
+                    <div class="item-label">McCarran-Ferguson Violation</div>
+                    <div class="item-desc">Fine for violating the McCarran-Ferguson Act (plus up to 1 year in prison).</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$50,000</div>
+                <div class="item-details">
+                    <div class="item-label">Federal Unfair Practices</div>
+                    <div class="item-desc">Max fine for intentional unfair practices under federal law (plus up to 15 years in prison).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Administration -->
+    <div class="category-section cat-admin" data-cat="admin">
+        <div class="category-header">
+            <div class="category-icon">🏛️</div>
+            <h2>Administration</h2>
+            <span class="count">2 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">4 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Commissioner Term</div>
+                    <div class="item-desc">The term length for the Commissioner of Insurance.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">5 Years</div>
+                <div class="item-details">
+                    <div class="item-label">Transaction Records</div>
+                    <div class="item-desc">Minimum period that producers and insurers must maintain transaction records.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tax & Retirement -->
+    <div class="category-section cat-tax" data-cat="tax">
+        <div class="category-header">
+            <div class="category-icon">🏦</div>
+            <h2>Tax & Retirement</h2>
+            <span class="count">5 items</span>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="item-value">7 Years</div>
+                <div class="item-details">
+                    <div class="item-label">7-Pay Test (MEC)</div>
+                    <div class="item-desc">Duration of the test used to determine if a policy is a Modified Endowment Contract.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">Age 59½</div>
+                <div class="item-details">
+                    <div class="item-label">IRA Penalty-Free Age</div>
+                    <div class="item-desc">Age after which IRA withdrawals are no longer subject to a 10% penalty tax.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$7,500</div>
+                <div class="item-details">
+                    <div class="item-label">IRA Contribution Limit</div>
+                    <div class="item-desc">Traditional IRA contribution limit for 2026.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">$1,100</div>
+                <div class="item-details">
+                    <div class="item-label">Catch-Up Contribution</div>
+                    <div class="item-desc">Additional contribution limit for individuals age 50 or older.</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-value">100 Employees</div>
+                <div class="item-details">
+                    <div class="item-label">SIMPLE Plan Eligibility</div>
+                    <div class="item-desc">Maximum size of a business allowed to establish a SIMPLE retirement plan.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const sections = document.querySelectorAll('.category-section');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+
+            sections.forEach(section => {
+                if (filter === 'all' || section.dataset.cat === filter) {
+                    section.classList.remove('hidden');
+                    section.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+    // Add fade-in animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+</body>
+</html>
